@@ -1,0 +1,523 @@
+/*
+ * The Bookerly font is specially designed for ebook readers by Amazon.
+ * I have to admit it looks really nice. Have a fallback of
+ * Droid Serif, though, in case this doesn't work.
+ */
+/*
+@font-face {
+  font-family: "Bookerly";
+  src: url("Bookerly-Bold.woff2") format("woff2"),
+    url("Bookerly-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bookerly";
+  src: url("Bookerly-BoldItalic.woff2") format("woff2"),
+    url("Bookerly-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Bookerly";
+  src: url("Bookerly-Regular.woff2") format("woff2"),
+    url("Bookerly-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+*/
+
+/*
+ * The Literata font is also specially designed for e-readers, but this one
+ * by Google, and is provided with an license that allows unlimited copying
+ * and reuse.
+ */
+@font-face {
+  font-family: "Literata";
+  src: url("Literata-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Literata";
+  src: url("Literata-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Literata";
+  src: url("Literata-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Literata";
+  src: url("Literata-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+}
+
+body {
+  text-align: justify;
+  margin: 0;
+  padding: 0;
+  background-color: #223;
+  background: linear-gradient(to right, #334, #223);
+  color: #ffffff;
+}
+
+body.alpha {
+  background-color: #922;
+  background: linear-gradient(to right, #922, #611);
+}
+
+body.beta {
+  background-color: #232;
+  background: linear-gradient(to right, #343, #232);
+}
+
+/*
+ * The Literata font looks great, but its italics are pretty ugly.
+ * The would replace the font for all italics.
+ */
+em,
+i,
+div.content p.diary,
+p.end,
+blockquote,
+div.coverpage div.subtitle,
+div.coverpage div.author-by,
+div.coverpage div.disclaimer {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/*
+ * intermediate width display, same layout as full-size but width
+ * is proportional. This is also the default for older browsers
+ * which don't understand the min-width and max-width media queries.
+ */
+div.menu {
+  /* padding 24px (2%) left and right gives total width of 288px (24%) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  padding-left: 2%;
+  padding-right: 2%;
+  text-align: left;
+  overflow-y: auto;
+}
+
+div.content {
+  /* padding 120px left and right and 288px left margin
+     and implicit 200px right margin gives total width of 1200px */
+  width: 50%;
+  /* 288px margin accommodates for menu width */
+  margin-left: 24% !important;
+  x-padding-top: 20px;
+  x-padding-bottom: 20px;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+/* full-size display:
+ *  - 250 px left menu
+ *  - 850 px main area
+ *  - 50 px right border
+ */
+@media screen and (min-width: 1350px) {
+  div.menu {
+    /* padding 24px (2%) left and right gives total width of 288px (24%) */
+    width: 240px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  div.content {
+    /* padding 120px left and right and 288px left margin
+       and implicit 72px right margin gives total width of 1200px */
+    width: 750px;
+    /* 288px margin accommodates for menu width */
+    margin-left: 288px !important;
+    padding-right: 120px;
+    padding-left: 120px;
+  }
+}
+
+/*
+ * Small display, for use when horizontal screen real estate is at a premium
+ * (hand-held devices, typically). Remove the left column and place the
+ * relevant content at the top of the screen instead.
+ */
+@media screen and (max-width: 799px) {
+  div.menu {
+    position: inherit;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    line-height: 1.2 !important;
+    background-color: #222233;
+    width: inherit !important;
+    font-size: 100%;
+  }
+
+  div.menu h1 {
+    font-size: 100%;
+    float: left;
+    margin: 0;
+    padding: 0;
+    padding-right: 10px !important;
+  }
+
+  div.menu p.versionlabel {
+    font-size: 80%;
+  }
+
+  body.alpha div.menu,
+  body.alpha div.menu p.prevnext {
+    background-color: #992222;
+    border-bottom: 1px solid #cc9999;
+  }
+  body.beta div.menu,
+  body.beta div.menu p.prevnext {
+    background-color: #223322;
+    border-bottom: 1px solid #99cc99;
+  }
+
+  /* Hide the table of contents in this format */
+  div.menu div.toc {
+    display: none;
+  }
+
+  /* Hide the top navigation bar in the content, since in this layout, there
+   * is a top navigation displayed as part of the 'menu' part. */
+  div.content p#top {
+    display: none;
+  }
+
+  div.menu p.prevnext {
+    position: fixed !important;
+    top: 0;
+    background-color: #222233;
+    bottom: inherit !important;
+    width: 100% !important;
+    margin-left: -10px !important;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #9999cc;
+  }
+  div.menu p.prevnext span.prev {
+    left: 10px !important;
+  }
+  div.menu p.prevnext span.next {
+    right: 10px;
+  }
+
+  div.content {
+    width: inherit;
+    margin-left: 0 !important;
+    x-padding-top: 20px;
+    x-padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* for very small displays, adjust font size of chapter title */
+  div.content h2 {
+    font-size: 48px !important;
+  }
+}
+
+div.menu {
+  font-family: "Droid Sans", sans-serif;
+  line-height: 2;
+}
+
+div.menu h1,
+div.menu p {
+  margin: 0;
+  padding: 0;
+}
+
+div.menu h1 {
+  line-height: 140%;
+  margin-top: 0.5em;
+}
+
+div.menu p.versionlabel {
+  line-height: 1.2;
+  text-align: left;
+}
+
+div.menu div.toc {
+  line-height: 1.2;
+}
+
+div.menu div.toc h2 {
+  margin-bottom: 2px;
+}
+
+div.menu div.toc ul {
+  margin-top: 0;
+}
+
+div.menu div.toc ul li.current a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+li i.fa-li {
+  font-size: 50%;
+  margin-top: 5px;
+}
+
+li.current i.fa-li {
+  font-size: 90%;
+  margin-top: 2px;
+  margin-left: 5px;
+}
+
+div.menu p.prevnext {
+  position: absolute;
+  bottom: 3em;
+  width: 85%;
+}
+
+div.menu a,
+div.menu a:visited,
+div.menu a:active,
+div.menu a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+div.menu .nolink {
+  color: #cccccc;
+}
+
+div.content {
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.5;
+  font-family: Literata, "Droid Serif", serif;
+}
+
+div.content h2 {
+  break-before: column;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 1em;
+  font-family: "Nova Square", Georgia, "Times New Roman", Times, serif;
+  font-size: 96px;
+  text-align: right;
+  font-weight: normal;
+}
+
+div.content p.dateline {
+  text-align: right;
+}
+
+div.content p {
+  text-indent: 1.5em;
+  margin: 0;
+  /* Set the white-space property. The tool that generates the HTML will   */
+  /* remove any extraneous white space inside a paragraph, thereby already */
+  /* doing what HTML does with collapsing white space. By setting the      */
+  /* property to "pre-wrap", the tool can now output extra spacing when    */
+  /* appropriate and have to be maintained in the display.                 */
+  /*                                                                       */
+  /* Seems to undo the "justify" setting, so keep it commented out for now */
+  /* white-space: pre-wrap; */
+}
+
+div.content p.diary {
+  text-indent: 0;
+  font-style: italic;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+div.content p.first {
+  text-indent: 0;
+}
+
+div.content p.right {
+  text-indent: 0;
+  text-align: right;
+}
+
+h4,
+div.content p.break2 {
+  text-align: center;
+  padding: 0.5em;
+}
+
+div.content p.prevnext {
+  font-family: "Droid Sans", sans-serif;
+  text-indent: 0;
+  margin-bottom: 20px;
+}
+
+div.content p#top {
+  padding-bottom: 2em;
+}
+
+div.content p#bottom {
+  padding-top: 2em;
+}
+
+div.content .nolink {
+  color: #999999;
+}
+
+div.content .note {
+  background-color: #ffa;
+  color: #666;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-indent: 0;
+  border: solid 1px #666;
+  padding: 0.5em;
+}
+
+/* End of the book/story, typically "The End" or "To Be Continued"
+   or something similar. */
+p.end {
+  text-align: center;
+  padding-top: 1em;
+  font-style: italic;
+}
+
+/* add position relative so that we can use absolute position in the
+   span.prev and span.next below. */
+p.prevnext {
+  text-align: center;
+  position: relative;
+  padding-top: 20px;
+}
+
+/* the 'Prev' link is positioned absolutely within the prevnext paragraph
+   so that the centered text of the paragraph is not affected by the
+   presence or absence of the link. */
+p.prevnext span.prev {
+  float: left;
+  position: absolute;
+  left: 0;
+}
+
+/* the 'Next' link is positioned absolutely within the prevnext paragraph
+   so that the centered text of the paragraph is not affected by the
+   presence or absence of the link. */
+p.prevnext span.next {
+  float: right;
+  position: absolute;
+  right: 0;
+}
+
+/* Specificially used in the story "The Writer", the blockquote is offset
+   by its default browser offset, but also by italics. */
+blockquote {
+  margin: 1em 2.5em;
+  font-style: italic;
+}
+
+div.coverpage div.coverimg img {
+  width: 100%;
+}
+
+div.coverpage div.title {
+  font-size: 250%;
+  font-weight: bold;
+  padding-top: 2em;
+  text-align: center;
+}
+
+div.coverpage div.subtitle {
+  font-size: 150%;
+  font-weight: bold;
+  font-style: italic;
+  padding-top: 0;
+  text-align: center;
+}
+
+div.coverpage div.author-by {
+  font-style: italic;
+  text-align: center;
+  padding-top: 0.5em;
+}
+
+div.coverpage div.author-name {
+  text-align: center;
+  padding-top: 0.5em;
+}
+
+div.coverpage div.version {
+  padding-top: 3em;
+  text-align: center;
+  font-size: 80%;
+}
+
+div.coverpage div.version-descr {
+  text-align: center;
+  font-size: 80%;
+}
+
+div.coverpage div.summary {
+  padding-top: 3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 80%;
+}
+
+div.coverpage div.copyright {
+  padding-top: 3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 80%;
+}
+
+div.coverpage div.other-rights {
+  padding-top: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 80%;
+}
+
+div.coverpage div.disclaimer {
+  font-style: italic;
+  padding-top: 3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 80%;
+}
+
+table,
+tr,
+td {
+  border: solid 1px #999;
+  border-collapse: collapse;
+}
+
+table {
+  width: 100%;
+}
+
+td {
+  padding: 2px;
+  text-align: left;
+  vertical-align: top;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 60%;
+}
