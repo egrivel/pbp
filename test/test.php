@@ -56,12 +56,12 @@
         </a>
       </p>
       <div id='container'>
-        container content
+        Loading the book...
       </div>
       <div id='bottom'>&nbsp;</div>
     </div>
     <div id="content">
-      <?php include("testcontent.html"); ?>
+      <?php include("great-expectations.html"); ?>
     </div>
   </body>
   <script>

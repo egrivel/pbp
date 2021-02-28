@@ -521,3 +521,11 @@ sup {
   vertical-align: super;
   font-size: 60%;
 }
+
+div.fig {
+  text-align: center;
+  width: 95%;
+}
+div.fig img {
+  width: 95%;
+}

@@ -3,7 +3,7 @@ let glPageNr = 0;
 // column width is calculated at initial paginate()
 let glColumnWidth = 0;
 let glColumnHeight = 0;
-let lastPage = 0;
+let glLastPage = 0;
 let glContentId;
 let glContainerId;
 
@@ -50,7 +50,7 @@ function onClickLeft(event) {
 }
 
 function onClickRight(event) {
-  if (glPageNr < (lastPage - 1)) {
+  if (glPageNr < (glLastPage - 1)) {
     glPageNr++;
   }
   setPosition(glPageNr);
@@ -61,8 +61,21 @@ function calculateSizes() {
   const containerElement = document.getElementById(glContainerId);
   const contentElement = document.getElementById(glContentId);
 
-  glColumnWidth = containerElement.clientWidth;
-  glColumnHeight = containerElement.clientHeight;
+  glColumnWidth = Math.floor(containerElement.clientWidth);
+  glColumnHeight = Math.floor(containerElement.clientHeight);
+
+  // The container element may have a client width that is not a whole number.
+  // Note that the clientWidth attribute always seems to be a whole number
+  // (the floor() above is probably not needed), but the bounding client
+  // rectangle can give the underlying fractional sizes.
+  // This causes the "real content" to have some space left. Give the
+  // container some padding to force the real content width to be actually
+  // the whole number it is expected to be.
+  const containerRect = containerElement.getBoundingClientRect();
+  const padding = containerRect.right - containerRect.left - glColumnWidth;
+  if (padding) {
+    containerElement.style.paddingRight = getPixels(padding);
+  }
 
   // Create the real content and prepare it
   const realContent = document.getElementById('js-real-content');
@@ -78,9 +91,9 @@ function calculateSizes() {
   endElement.style.height = 0;
 
   const rect = endElement.getBoundingClientRect();
-  lastPage = Math.floor(rect.left / glColumnWidth) + 1;
-  if (glPageNr > lastPage) {
-    glPageNr = lastPage;
+  glLastPage = Math.floor(rect.left / glColumnWidth) + 1;
+  if (glPageNr > glLastPage) {
+    glPageNr = glLastPage;
   }
   setPosition(glPageNr);
 }
@@ -97,6 +110,9 @@ function paginate(containerId, contentId, options) {
     // Without a container or content there is nothing to paginate
     return;
   }
+
+  glColumnWidth = Math.floor(containerElement.clientWidth);
+  glColumnHeight = Math.floor(containerElement.clientHeight);
 
   containerElement.style.overflowX = 'hidden';
   containerElement.position = 'relative';
@@ -120,7 +136,9 @@ function paginate(containerId, contentId, options) {
 
   const iterator = contentElement.children;
   for (i = 0; i < iterator.length; i++) {
-    realContent.appendChild(iterator[i].cloneNode(true));
+    const clonedNode = iterator[i].cloneNode(true);
+    clonedNode.dataset.itemId = i;
+    realContent.appendChild(clonedNode);
   }
 
   endElement = document.createElement('div');
