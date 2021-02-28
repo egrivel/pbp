@@ -15,7 +15,7 @@ p#top {
   padding-bottom: 20px;
 }
 
-div#container {
+div#pbp-container {
   display: flex;
   flex-grow: 1;
 }
@@ -26,6 +26,6 @@ div#bottom {
   margin: 0;
 }
 
-div#content {
+div#pbp-content {
   display: none;
 }

@@ -33,10 +33,10 @@
 
       <p class='prevnext'>
         <span class='prev'>
-          <a href='#' onclick='onClickLeft(); return false;'>Prev</a>
+          <a href='#' onclick='pbpOnClickLeft(); return false;'>Prev</a>
         </span>
         <span class='next'>
-          <a href='#' onclick='onClickRight(); return false;'>Next</a>
+          <a href='#' onclick='pbpOnClickRight(); return false;'>Next</a>
         </span>
         <a href='#' title='Table of Contents'>
           <i class='fa fa-bars'></i>
@@ -46,26 +46,32 @@
     <div id="wrapper" class='content hyphenate'>
       <p class='prevnext'>
         <span class='prev'>
-          <a href='#' onclick='onClickLeft(); return false;'>Prev</a>
+          <a href='#' onclick='pbpOnClickLeft(); return false;'>Prev</a>
         </span>
         <span class='next'>
-          <a href='#' onclick='onClickRight(); return false;'>Next</a>
+          <a href='#' onclick='pbpOnClickRight(); return false;'>Next</a>
         </span>
         <a href='#' title='Table of Contents'>
           <i class='fa fa-bars'></i>
         </a>
       </p>
-      <div id='container'>
+      <div id='pbp-container'>
         Loading the book...
       </div>
       <div id='bottom'>&nbsp;</div>
     </div>
-    <div id="content">
-      <?php include("great-expectations.html"); ?>
+    <div id="pbp-content">
+      <?php
+        if (isset($_GET["content"])) {
+          include($_GET["content"]);
+        } else {
+          include("great-expectations.html");
+        }
+      ?>
     </div>
   </body>
   <script>
-    paginate('container', 'content', {
+    pbpPaginate('pbp-container', 'pbp-content', {
     });
   </script>
 </html>

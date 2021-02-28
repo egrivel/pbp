@@ -10,7 +10,7 @@ let glContainerId;
 let leftOffset = 0;
 let topOffset = 0;
 
-function getHeight(elementId) {
+function pbpGetHeight(elementId) {
   const element = document.getElementById(elementId);
   if (element) {
     return element.clientHeight;
@@ -18,7 +18,7 @@ function getHeight(elementId) {
   return 0;
 }
 
-function getWidth(elementId) {
+function pbpGetWidth(elementId) {
   const element = document.getElementById(elementId);
   if (element) {
     return element.clientWidth;
@@ -26,22 +26,22 @@ function getWidth(elementId) {
   return 0;
 }
 
-function getPixels(value) {
+function pbpGetPixels(value) {
   return "" + value + "px";
 }
 
 function setPosition(nr) {
-  contentElement = document.getElementById('js-real-content');
+  contentElement = document.getElementById('pbp-real-content');
 
   const newLeft = glPageNr * glColumnWidth;
   if (nr) {
-    contentElement.style.left = "-" + getPixels(newLeft);
+    contentElement.style.left = "-" + pbpGetPixels(newLeft);
   } else {
     contentElement.style.left = 0;
   }
 }
 
-function onClickLeft(event) {
+function pbpOnClickLeft(event) {
   if (glPageNr > 0) {
     glPageNr--;
   }
@@ -49,7 +49,7 @@ function onClickLeft(event) {
   return false;
 }
 
-function onClickRight(event) {
+function pbpOnClickRight(event) {
   if (glPageNr < (glLastPage - 1)) {
     glPageNr++;
   }
@@ -57,7 +57,7 @@ function onClickRight(event) {
   return false;
 }
 
-function calculateSizes() {
+function pbpCalculateSizes() {
   const containerElement = document.getElementById(glContainerId);
   const contentElement = document.getElementById(glContentId);
 
@@ -74,19 +74,19 @@ function calculateSizes() {
   const containerRect = containerElement.getBoundingClientRect();
   const padding = containerRect.right - containerRect.left - glColumnWidth;
   if (padding) {
-    containerElement.style.paddingRight = getPixels(padding);
+    containerElement.style.paddingRight = pbpGetPixels(padding);
   }
 
   // Create the real content and prepare it
-  const realContent = document.getElementById('js-real-content');
-  realContent.style.width = getPixels(2 * glColumnWidth);
-  realContent.style.height = getPixels(glColumnHeight);
-  realContent.style.columnWidth = getPixels(glColumnWidth);
+  const realContent = document.getElementById('pbp-real-content');
+  realContent.style.width = pbpGetPixels(2 * glColumnWidth);
+  realContent.style.height = pbpGetPixels(glColumnHeight);
+  realContent.style.columnWidth = pbpGetPixels(glColumnWidth);
   realContent.style.columnGap = 0;
 
   // The element with id "end" is at the end of the input, so it should be
   // on the last page. Use it to get the number of pages
-  const endElement = document.getElementById('js-end');
+  const endElement = document.getElementById('pbp-end');
   endElement.style.width = 0;
   endElement.style.height = 0;
 
@@ -98,7 +98,7 @@ function calculateSizes() {
   setPosition(glPageNr);
 }
 
-function paginate(containerId, contentId, options) {
+function pbpPaginate(containerId, contentId, options) {
   glContainerId = containerId;
   glContentId = contentId;
   glOptions = options;
@@ -123,32 +123,44 @@ function paginate(containerId, contentId, options) {
 
   // Create the real content and prepare it
   const realContent = document.createElement("div");
-  realContent.id = 'js-real-content';
+  realContent.id = 'pbp-real-content';
   realContent.style.position = 'relative';
   realContent.style.top = 0;
   realContent.style.left = 0;
-  realContent.style.width = getPixels(2 * glColumnWidth);
-  realContent.style.height = getPixels(glColumnHeight);
-  realContent.style.columnWidth = getPixels(glColumnWidth);
+  realContent.style.width = pbpGetPixels(2 * glColumnWidth);
+  realContent.style.height = pbpGetPixels(glColumnHeight);
+  realContent.style.columnWidth = pbpGetPixels(glColumnWidth);
   realContent.style.columnCount = 2;
   realContent.style.columnGap = 0;
   realContent.style.columnFill = 'auto';
 
-  const iterator = contentElement.children;
-  for (i = 0; i < iterator.length; i++) {
-    const clonedNode = iterator[i].cloneNode(true);
-    clonedNode.dataset.itemId = i;
-    realContent.appendChild(clonedNode);
+  let count = 0;
+  glHeading = [];
+  glHeadingNode = [];
+  while (contentElement.children.length) {
+    const node = contentElement.children[0];
+    contentElement.removeChild(contentElement.children[0]);
+
+    const tagName = node.tagName.toLowerCase();
+    if (tagName === 'h1' || tagName === 'h2') {
+      // Keep list of heading elements
+      const index = glHeading.length;
+      glHeading[index] = count;
+      glHeadingNode[index] = node;
+    }
+
+    node.dataset.itemId = count++;
+    realContent.appendChild(node);
   }
 
   endElement = document.createElement('div');
-  endElement.id = 'js-end';
+  endElement.id = 'pbp-end';
   endElement.style.width = 0;
   endElement.style.height = 0;
   realContent.appendChild(endElement);
 
   containerElement.appendChild(realContent);
 
-  calculateSizes();
-  window.addEventListener("resize", calculateSizes);
+  pbpCalculateSizes();
+  window.addEventListener("resize", pbpCalculateSizes);
 }
