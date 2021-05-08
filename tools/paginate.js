@@ -6,6 +6,7 @@ let glColumnHeight = 0;
 let glLastPage = 0;
 let glContentId;
 let glContainerId;
+let glFirstOnPage = 0;
 
 let leftOffset = 0;
 let topOffset = 0;
@@ -39,6 +40,17 @@ function setPosition(nr) {
   } else {
     contentElement.style.left = 0;
   }
+
+  const containerElement = document.getElementById(glContainerId);
+  const containerRect = containerElement.getBoundingClientRect();
+  const topLeft = document.elementFromPoint(containerRect.left, containerRect.top);
+  if (topLeft.dataset) {
+    glFirstOnPage = topLeft.dataset.itemId;
+    console.log("Set topleft to " + glFirstOnPage);
+  } else {
+    console.log("topleft has no dataset");
+  }
+  document.querySelectorAll("[data-foo='1']")
 }
 
 function pbpOnClickLeft(event) {
@@ -59,7 +71,6 @@ function pbpOnClickRight(event) {
 
 function pbpCalculateSizes() {
   const containerElement = document.getElementById(glContainerId);
-  const contentElement = document.getElementById(glContentId);
 
   glColumnWidth = Math.floor(containerElement.clientWidth);
   glColumnHeight = Math.floor(containerElement.clientHeight);
@@ -92,6 +103,29 @@ function pbpCalculateSizes() {
 
   const rect = endElement.getBoundingClientRect();
   glLastPage = Math.floor(rect.left / glColumnWidth) + 1;
+
+  const selector = '[data-item-id="' + glFirstOnPage + '"]';
+  const prevTopLeft = document.querySelector(selector);
+  if (prevTopLeft) {
+    const prevRect = prevTopLeft.getBoundingClientRect();
+    console.log('container.left=' + containerRect.left + ', right=' + containerRect.right);
+    console.log('prevTopLeft.left=' + prevRect.left + ', right=' + prevRect.right);
+    let right = (prevRect.left + prevRect.right) / 2;
+    const oldPageNr = glPageNr;
+    while (right > containerRect.right) {
+      right -= glColumnWidth;
+      glPageNr++;
+    }
+    while (right < containerRect.left) {
+      right += glColumnWidth;
+      glPageNr++;
+    }
+    if (glPageNr !== oldPageNr) {
+      console.log('Page number ' + oldPageNr + '-->' + glPageNr);
+    }
+  } else {
+    console.log('No prevTopLeft found for ' + selector);
+  }
   if (glPageNr > glLastPage) {
     glPageNr = glLastPage;
   }

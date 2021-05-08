@@ -1,4 +1,4 @@
-# Design
+# PBP: Design
 
 Pagination should be easy to set up, and work mostly by itself. To make this
 module as simple as possible, the goal is for the web developer to
@@ -21,3 +21,11 @@ Whenever the container resizes, the paginate function will
 - re-calculate the chunks
 - determine in which new chunk the current position falls
 - display that new chunk as the current one.
+
+## Testing
+
+To support testing, an HTML copy of the book _Great Expectations_ by
+Charles Dickens is included. This is over a megabyte of marked-up text,
+plus images, that will give PBP a good work-out. A testing _harness_ is
+also included: an HTML page that incorporates PBP to provide paginated
+content.

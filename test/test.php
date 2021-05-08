@@ -65,7 +65,7 @@
         if (isset($_GET["content"])) {
           include($_GET["content"]);
         } else {
-          include("great-expectations.html");
+          include("testcontent.html");
         }
       ?>
     </div>
