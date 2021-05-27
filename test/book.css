@@ -1,38 +1,9 @@
 /*
- * The Bookerly font is specially designed for ebook readers by Amazon.
- * I have to admit it looks really nice. Have a fallback of
- * Droid Serif, though, in case this doesn't work.
- */
-/*
-@font-face {
-  font-family: "Bookerly";
-  src: url("Bookerly-Bold.woff2") format("woff2"),
-    url("Bookerly-Bold.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Bookerly";
-  src: url("Bookerly-BoldItalic.woff2") format("woff2"),
-    url("Bookerly-BoldItalic.woff") format("woff");
-  font-weight: bold;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Bookerly";
-  src: url("Bookerly-Regular.woff2") format("woff2"),
-    url("Bookerly-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-*/
-
-/*
  * The Literata font is also specially designed for e-readers, but this one
  * by Google, and is provided with an license that allows unlimited copying
  * and reuse.
+ * Note that the Literata _italics_ are particularly ugly. So we use only
+ * the normal version, and use the standard Georgia font for all italics.
  */
 @font-face {
   font-family: "Literata";
@@ -41,12 +12,14 @@
   font-style: normal;
 }
 
+/*
 @font-face {
   font-family: "Literata";
   src: url("Literata-BoldItalic.woff") format("woff");
   font-weight: bold;
   font-style: italic;
 }
+*/
 
 @font-face {
   font-family: "Literata";
@@ -55,12 +28,14 @@
   font-style: normal;
 }
 
+/*
 @font-face {
   font-family: "Literata";
   src: url("Literata-Italic.woff") format("woff");
   font-weight: normal;
   font-style: italic;
 }
+*/
 
 body {
   text-align: justify;
@@ -94,6 +69,7 @@ div.coverpage div.subtitle,
 div.coverpage div.author-by,
 div.coverpage div.disclaimer {
   font-family: Georgia, "Times New Roman", serif;
+  font-size: 110%;
 }
 
 /*
@@ -312,9 +288,12 @@ div.content {
 }
 
 div.content h2 {
+  /* Column breaks are not supported on Firefox... :-( */
   break-before: column;
+  -moz-break-before: column;
   margin: 0;
   padding: 0;
+  padding-top: 2em;
   padding-bottom: 1em;
   font-family: "Nova Square", Georgia, "Times New Roman", Times, serif;
   font-size: 96px;
@@ -520,4 +499,12 @@ td {
 sup {
   vertical-align: super;
   font-size: 60%;
+}
+
+div.fig {
+  text-align: center;
+  width: 95%;
+}
+div.fig img {
+  width: 95%;
 }
