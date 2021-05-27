@@ -1,5 +1,14 @@
 # PBP - Getting Started
 
+PBP (Pretty Basic Pagination) is a JavaScript module to help display
+book-like paginated content on a web page.
+
+Before starting with PBP, you want to make sure this is the module for
+you. PBP is not a finished product, it is a tool for _developers_ of web site
+to include the pagination function in their work. If you are not familiar
+with HTML, CSS, and in particular JavaScript coding, this module is not
+for you.
+
 ## Simple Usage
 
 In order to use the PBP module, three things must be provided:
@@ -9,7 +18,6 @@ In order to use the PBP module, three things must be provided:
 - A _content_ element named `pbp-content` that contains the content to be
   paginated.
 - A call to the `pbpPaginate()` function to start pagination.
-
 
 ### Container Element
 

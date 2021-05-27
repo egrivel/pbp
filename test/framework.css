@@ -21,11 +21,29 @@ div#pbp-container {
 }
 
 div#bottom {
-  display: flex;
-  height: 20px;
+  x-display: flex;
+  width: 100%;
+  height: 3em;
   margin: 0;
+  text-align: right;
 }
 
 div#pbp-content {
   display: none;
+}
+
+ul.table-of-contents {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.table-of-contents li {
+  margin: 0;
+  margin-left: 0.5em;
+  line-height: 130%;
+}
+
+ul.table-of-contents li a {
+  text-decoration: none;
 }

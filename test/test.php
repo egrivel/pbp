@@ -21,15 +21,27 @@
         This is a test page for the pagination module. It shows a left area
         (this area) which can contain navigation and other information,
         maybe a book cover.
-      </p>
-      <p>
-        In the middle is the content area, which has navigation buttons at the
+        On the right is the content area, which has navigation buttons at the
         top, and the actual paginated container below it.
       </p>
       <p>
-        The content area has a "max width" to show that the paginated container
-        can be limited in different ways.
+        <form>
+          <input type="text" id="inp_page" name="page" size="3" />
+          <input type="submit" name="do_goto" value="Go To Page" onClick="{
+            const inp = document.getElementById('inp_page');
+            let value;
+            if (inp) {
+              value = Number(inp.value) - 1;
+              pbpGoToPage(value);
+            }
+            return false;
+          }" />
+        </form>
       </p>
+
+      <p><strong>Table of Contents</strong></p>
+      <ul id="tableOfContents" class="table-of-contents">
+      </ul>
 
       <p class='prevnext'>
         <span class='prev'>
@@ -58,7 +70,9 @@
       <div id='pbp-container'>
         Loading the book...
       </div>
-      <div id='bottom'>&nbsp;</div>
+      <div id="bottom">
+        Page 1
+      </div>
     </div>
     <div id="pbp-content">
       <?php
@@ -71,6 +85,31 @@
     </div>
   </body>
   <script>
+    pbpRegister('pbp-page-nr', nr => {
+      const element = document.getElementById('bottom');
+      if (element) {
+        element.textContent = `Page ${nr}`;
+      }
+      const pageInput = document.getElementById('inp_page');
+      if (pageInput) {
+        pageInput.value = String(nr);
+      }
+    });
+    pbpRegister('pbp-toc', toc => {
+      // toc is an array of objects, {title, pageNr}
+      let text = '';
+      toc.forEach(item => {
+        const {title, pageNr} = item;
+        if (title && pageNr) {
+          text += `<li><a href="#" onClick="{pbpGoToPage(${pageNr}-1); `;
+          text += `return false;}">${title} . . . ${pageNr}</a></li>`;
+        }
+      });
+      const list = document.getElementById('tableOfContents');
+      if (list) {
+        list.innerHTML = text;
+      }
+    });
     pbpPaginate('pbp-container', 'pbp-content', {
     });
   </script>

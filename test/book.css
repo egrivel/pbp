@@ -69,6 +69,7 @@ div.coverpage div.subtitle,
 div.coverpage div.author-by,
 div.coverpage div.disclaimer {
   font-family: Georgia, "Times New Roman", serif;
+  font-size: 110%;
 }
 
 /*
@@ -287,9 +288,12 @@ div.content {
 }
 
 div.content h2 {
+  /* Column breaks are not supported on Firefox... :-( */
   break-before: column;
+  -moz-break-before: column;
   margin: 0;
   padding: 0;
+  padding-top: 2em;
   padding-bottom: 1em;
   font-family: "Nova Square", Georgia, "Times New Roman", Times, serif;
   font-size: 96px;
