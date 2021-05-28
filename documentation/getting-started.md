@@ -14,9 +14,11 @@ for you.
 In order to use the PBP module, three things must be provided:
 
 - A _container_ element named `pbp-container` where the paginated
-  content will be displayed.
+  content will be displayed. The container element should be empty; it will
+  be populated by PBP.
 - A _content_ element named `pbp-content` that contains the content to be
-  paginated.
+  paginated. The content element should be placed _outside_ of the container
+  element.
 - A call to the `pbpPaginate()` function to start pagination.
 
 ### Container Element
@@ -25,11 +27,16 @@ The container element tells PBP where to display the paginated content. This
 element should be empty (any content will be overwritten by PBP) and must have
 the exact desired size.
 
+You are responsible for sizing and positioning the container element. PBP will
+recognize when the container element gets resized, e.g. when someone changes
+the browser window, and will update the content displayed inside the container
+accordingly.
+
 ### Content Element
 
 The content element should be styled with a `display: hide` style so it does
-not affect the page layout. PBP will take all the child elements from the
-content and move them over to the container.
+not affect the page layout when the page initially loads. PBP will take all
+the child elements from the content and move them over to the container.
 
 ### Identifying Position
 
@@ -38,12 +45,12 @@ provided in the content. Each of the top-level child elements will get
 its own unique identifier upon load. For example, if the document to load
 looks like:
 
-```
+```html
 <h1>This is an example</h1>
 <p>
-  The top level <b>paragraph</b> element contains multiple <em>child</em>
-  elements. The child elements do <em>not</em> get their own identifier,
-  only the paragraph element.
+  The top level <b>paragraph</b> element contains multiple
+  <em>child</em> elements. The child elements do <em>not</em> get their own
+  identifier, only the paragraph element.
 </p>
 ```
 
@@ -56,3 +63,27 @@ page will still be visible on the new page. This works best when the
 children of the content element are as granular as possible. It is recommended
 not to use `<div>` or other containers for whole chapters or sections, but to
 have individual paragraphs of text as direct children of the content element.
+
+## Example File
+
+This repo contains an example file, `test.php`, which renders a long text
+paginated in a web page. The example file is provided as a PHP file because
+that provides a way to include different contents through a URL parameter.
+If you cannot use PHP, or do not know how to use PHP, rename the file to
+`test.html` and replace this part:
+
+```html
+<?php
+  if (isset($_GET["content"])) {
+    include($_GET["content"]);
+  } else {
+    include("great-expectations.html");
+  }
+?>
+```
+
+with the HTML content you want to render.
+
+The `great-expectations.html` file is provided as the default content for the
+example. This is the book _Great Expectations_ by Charles Dickens, for which
+any copyright has expired so that it can be included in this module.

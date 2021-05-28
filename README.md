@@ -12,7 +12,7 @@ the content, as well as JavaScript functions to support the various
 features.
 
 As much as PBP is “basic,” it is not for the faint-of-heart. A fair amount
-of basic web design knowledge is needed to implement it successfully.
+of web design knowledge is needed to implement it successfully.
 At a minimum, understanding of HTML, CSS and JavaScript technologies is
 expected.
 
@@ -30,18 +30,24 @@ adapt it for your use, you want to start with the
 PBP module is laid out and what tools are available to test out any
 changes made to the module.
 
-## Warranty
+## MIT License
 
-PBP is not intended to be incorporated as part of a framework like
-WordPress. You are welcome to try and incorporate it in any existing
-framework you like, but no guarantees that will work.
+Copyright (c) 2021 Eric Grivel
 
-## License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-PBP is provided as-is, with no warranty it will work for you. You are free
-to use the code, and to adapt it to your own needs. Attribution is
-appreciated, but not required. The PBP source code is copyrighted by the
-author, who retains all rights to the code. You cannot sell PBP by itself.
-However, you can use it in a commercial package, as long as your license
-makes clear that the PBP part of your package (or the part of your package
-directly derived from PBP) is free to be copied and re-used.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
