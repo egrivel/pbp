@@ -12,6 +12,61 @@
     @import url('book.css');
     </style>
     <script src='paginate.js'></script>
+    <script>
+      // Global functions; additional functionality at the bottom of the page
+
+      // Toggle the Table of Contents
+      function toggleToc() {
+        const element = document.getElementById('toc-background');
+        if (element) {
+          if (element.style.display === 'none') {
+            element.style.display = 'block';
+          } else {
+            element.style.display = 'none';
+          }
+        }
+      }
+
+      // Implement the Go to Page functionality
+      function goToPage() {
+        const inp = document.getElementById('inp_page');
+        let value;
+        if (inp) {
+          value = Number(inp.value) - 1;
+          pbpGoToPage(value);
+        }
+        return false;
+      }
+
+      // Register the callback when the page number changes
+      pbpRegister('pbp-page-nr', nr => {
+        const element = document.getElementById('bottom');
+        if (element) {
+          element.textContent = `Page ${nr}`;
+        }
+        const pageInput = document.getElementById('inp_page');
+        if (pageInput) {
+          pageInput.value = String(nr);
+        }
+      });
+
+      // Register the callback when the Table of Contents changes
+      pbpRegister('pbp-toc', toc => {
+        // toc is an array of objects, {title, pageNr}
+        let text = '';
+        toc.forEach(item => {
+          const {title, pageNr} = item;
+          if (title && pageNr) {
+            text += `<li><a href="#" onClick="{pbpGoToPage(${pageNr}-1); `;
+            text += `return false;}">${title} . . . ${pageNr}</a></li>`;
+          }
+        });
+        const list = document.getElementById('toc-list');
+        if (list) {
+          list.innerHTML = text;
+        }
+      });
+    </script>
     <title>Pagination Test Page</title>
   </head>
   <body class='alpha'>
@@ -25,23 +80,11 @@
         top, and the actual paginated container below it.
       </p>
       <p>
-        <form>
-          <input type="text" id="inp_page" name="page" size="3" />
-          <input type="submit" name="do_goto" value="Go To Page" onClick="{
-            const inp = document.getElementById('inp_page');
-            let value;
-            if (inp) {
-              value = Number(inp.value) - 1;
-              pbpGoToPage(value);
-            }
-            return false;
-          }" />
-        </form>
+        <input type="text" id="inp_page" name="page" size="3"
+          onEnter="return goToPage();" />
+        <input type="submit" name="do_goto"
+          value="Go To Page" onClick="return goToPage();" />
       </p>
-
-      <p><strong>Table of Contents</strong></p>
-      <ul id="tableOfContents" class="table-of-contents">
-      </ul>
 
       <p class='prevnext'>
         <span class='prev'>
@@ -50,7 +93,7 @@
         <span class='next'>
           <a href='#' onclick='pbpOnClickRight(); return false;'>Next</a>
         </span>
-        <a href='#' title='Table of Contents'>
+        <a href='#' title='Table of Contents' onClick='toggleToc()'>
           <i class='fa fa-bars'></i>
         </a>
       </p>
@@ -63,7 +106,7 @@
         <span class='next'>
           <a href='#' onclick='pbpOnClickRight(); return false;'>Next</a>
         </span>
-        <a href='#' title='Table of Contents'>
+        <a href='#' title='Table of Contents' onClick='toggleToc()'>
           <i class='fa fa-bars'></i>
         </a>
       </p>
@@ -83,34 +126,27 @@
         }
       ?>
     </div>
+    <div id="toc-background" class="table-of-contents" style="display: none;" onClick="toggleToc();">
+      <div class="toc-body">
+        <h2>Table of Contents</h2>
+        <ul id="toc-list">
+        </ul>
+      </div>
+    </div>
   </body>
   <script>
-    pbpRegister('pbp-page-nr', nr => {
-      const element = document.getElementById('bottom');
-      if (element) {
-        element.textContent = `Page ${nr}`;
-      }
-      const pageInput = document.getElementById('inp_page');
-      if (pageInput) {
-        pageInput.value = String(nr);
-      }
-    });
-    pbpRegister('pbp-toc', toc => {
-      // toc is an array of objects, {title, pageNr}
-      let text = '';
-      toc.forEach(item => {
-        const {title, pageNr} = item;
-        if (title && pageNr) {
-          text += `<li><a href="#" onClick="{pbpGoToPage(${pageNr}-1); `;
-          text += `return false;}">${title} . . . ${pageNr}</a></li>`;
+    // Add a handler or the [Enter] key to the input box
+    const inp = document.getElementById('inp_page');
+    if (inp) {
+      inp.addEventListener("keyup", (event) => {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          goToPage();
         }
       });
-      const list = document.getElementById('tableOfContents');
-      if (list) {
-        list.innerHTML = text;
-      }
-    });
-    pbpPaginate('pbp-container', 'pbp-content', {
-    });
+    }
+
+    // Invoke pagination, building the actual paginated book
+    pbpPaginate('pbp-container', 'pbp-content', {});
   </script>
 </html>

@@ -96,18 +96,17 @@ div.content {
   width: 50%;
   /* 288px margin accommodates for menu width */
   margin-left: 24% !important;
-  x-padding-top: 20px;
-  x-padding-bottom: 20px;
   padding-right: 10%;
   padding-left: 10%;
 }
 
 /* full-size display:
- *  - 250 px left menu
- *  - 850 px main area
- *  - 50 px right border
+ *  - 288 px left menu
+ *  - 600 px main area
+ *    - 120px left and right padding
+ *  - 72 px right border
  */
-@media screen and (min-width: 1350px) {
+@media screen and (min-width: 1200px) {
   div.menu {
     /* padding 24px (2%) left and right gives total width of 288px (24%) */
     width: 240px;
@@ -118,7 +117,7 @@ div.content {
   div.content {
     /* padding 120px left and right and 288px left margin
        and implicit 72px right margin gives total width of 1200px */
-    width: 750px;
+    width: 600px;
     /* 288px margin accommodates for menu width */
     margin-left: 288px !important;
     padding-right: 120px;
@@ -133,7 +132,8 @@ div.content {
  */
 @media screen and (max-width: 799px) {
   div.menu {
-    position: inherit;
+    position: absolute;
+    height: 50px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 30px;
@@ -179,7 +179,8 @@ div.content {
   }
 
   div.menu p.prevnext {
-    position: fixed !important;
+    position: absolute !important;
+    z-index: 1;
     top: 0;
     background-color: #222233;
     bottom: inherit !important;
@@ -196,10 +197,16 @@ div.content {
     right: 10px;
   }
 
+  div#wrapper p.prevnext {
+    display: none;
+  }
+
   div.content {
+    position: inherit;
+    top: 0;
     width: inherit;
     margin-left: 0 !important;
-    x-padding-top: 20px;
+    x-padding-top: 50px;
     x-padding-bottom: 20px;
     padding-left: 10px;
     padding-right: 10px;
