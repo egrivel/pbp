@@ -99,7 +99,7 @@ function pbpUpdateToc() {
   if (glCallbacks[EVENT_TOC]) {
     const toc = [];
     glHeadingNode.forEach((node) => {
-      const title = node.childNodes[0].nodeValue;
+      const title = node.textContent;
       const rect = node.getBoundingClientRect();
       const pageNr = Math.floor(rect.left / glColumnWidth) + 1;
       toc.push({ title, pageNr });
