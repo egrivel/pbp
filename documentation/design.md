@@ -1,18 +1,52 @@
 # PBP: Design
 
-Pagination should be easy to set up, and work mostly by itself. To make this
-module as simple as possible, the goal is for the web developer to
+Pagination on a web page is not a trivial exercise. The PBP module tries to
+handle the hard part of the pagination, without being too opinionated on
+_what_ it is that is being paginated.
 
-- create a container with the ID `js-body` which contains the actual body
-  of the part to be paginated.
-- optionally create a container with ID `js-top` to contain the top part,
-  which is displayed on each page.
-- optionally create a container with ID `js-bottom` to contain the bottom
-  part, which is displayed on each page.
-- call the `paginate()` function which will paginate the content of the
-  `js-body` container.
+In order for pagination to be incorporated into a project, there has to be
+some setup and integration that needs to be handled. This page will document
+how the PBP side of this setup and integration works.
 
-The module uses CSS columns to create the illusion of pages.
+PBP operates under the assumption that the project will provide a fully sized
+DOM element, `pbp-container`, which is sized and resized appropriately when
+the browser window resizes. The project handles everything else on the page,
+PBP makes sure the `pbp-container` will be populated and updated.
+
+## Columns
+
+In order to provide the illusion of pagination, PBP uses _columns_ to display
+the content.
+```
++---------------------------------------------------
+|        |        |        |        |        |
+| page 1 | page 2 | page 3 | page 4 | page 5 | ...
+|        |        |        |        |        |
++---------------------------------------------------
+```
+
+The content element is moved underneath the viewport, so that at any time,
+only the desired page will be visible to the user.
+```
+              <-- |        | -->
+                  |viewport|
++---------------------------------------------------
+|        |        |        |        |        |
+| page 1 | page 2 | page 3 | page 4 | page 5 | ...
+|        |        |        |        |        |
++---------------------------------------------------
+                  |        |
+```
+
+
+
+
+## Resizing
+
+When the user resizes the browser window, ideally the “current page” will be
+updated so that the reader’s position in the text is maintained. Since PBP
+doesn’t know where on the page the reader exactly is, it will have to do some
+approximation with this determination of the “current” position.
 
 Whenever the container resizes, the paginate function will
 

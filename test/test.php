@@ -32,7 +32,7 @@
         const inp = document.getElementById('inp_page');
         let value;
         if (inp) {
-          value = Number(inp.value) - 1;
+          value = Number(inp.value);
           pbpGoToPage(value);
         }
         return false;
@@ -57,7 +57,7 @@
         toc.forEach(item => {
           const {title, pageNr} = item;
           if (title && pageNr) {
-            text += `<li><a href="#" onClick="{pbpGoToPage(${pageNr}-1); `;
+            text += `<li><a href="#" onClick="{pbpGoToPage(${pageNr}); `;
             text += `return false;}">${title} . . . ${pageNr}</a></li>`;
           }
         });
@@ -147,6 +147,8 @@
     }
 
     // Invoke pagination, building the actual paginated book
-    pbpPaginate('pbp-container', 'pbp-content', {});
+    pbpPaginate('pbp-container', 'pbp-content', {
+      toc: ['h1', 'h2']
+    });
   </script>
 </html>

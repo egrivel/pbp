@@ -3,6 +3,7 @@ let glPageNr = 0;
 // column width is calculated at initial paginate()
 let glColumnWidth = 0;
 let glColumnHeight = 0;
+let glIsFirst = true;
 let glLastPage = 0;
 let glContentId;
 let glContainerId;
@@ -10,6 +11,9 @@ let glFirstOnPage = 0;
 
 let leftOffset = 0;
 let topOffset = 0;
+
+// Elements for the table of contents
+let glHeadingNodes = [];
 
 const FIXED_CONTAINER_ID = "pbp-fixed-container";
 const REAL_CONTENT_ID = "pbp-real-content";
@@ -60,9 +64,6 @@ function pbpSetPosition(nr) {
   );
   if (topLeft.dataset) {
     glFirstOnPage = topLeft.dataset.itemId;
-    // console.log("Set topleft to " + glFirstOnPage);
-    // } else {
-    //   console.log("topleft has no dataset");
   }
   document.querySelectorAll("[data-foo='1']");
 
@@ -88,21 +89,26 @@ function pbpOnClickRight(event) {
 }
 
 function pbpGoToPage(pageNr) {
-  if (pageNr && pageNr >= 0 && pageNr < glLastPage) {
-    glPageNr = pageNr;
-    pbpSetPosition(glPageNr);
+  if (pageNr < 1) {
+    glPageNr = 0;
+  } else if (pageNr <= glLastPage) {
+    glPageNr = pageNr - 1;
+  } else {
+    glPageNr = glLastPage - 1;
   }
+  pbpSetPosition(glPageNr);
   return false;
 }
 
 function pbpUpdateToc() {
-  if (glCallbacks[EVENT_TOC]) {
+  if (glHeadingNodes[0] && glCallbacks[EVENT_TOC]) {
     const toc = [];
-    glHeadingNode.forEach((node) => {
+    glHeadingNodes.forEach((node) => {
       const title = node.textContent;
+      const id = node.id;
       const rect = node.getBoundingClientRect();
       const pageNr = Math.floor(rect.left / glColumnWidth) + 1;
-      toc.push({ title, pageNr });
+      toc.push({ id, title, pageNr });
     });
     glCallbacks[EVENT_TOC](toc);
   }
@@ -115,8 +121,20 @@ function pbpUpdateToc() {
 function pbpCalculateSizes() {
   const containerElement = document.getElementById(glContainerId);
 
-  glColumnWidth = Math.floor(containerElement.clientWidth);
-  glColumnHeight = Math.floor(containerElement.clientHeight);
+  const newColumnWidth = Math.floor(containerElement.clientWidth);
+  const newColumnHeight = Math.floor(containerElement.clientHeight);
+  if (glColumnWidth == newColumnWidth && glColumnHeight === newColumnHeight) {
+    // No actual changes in the size, so nothing to do (EXCEPT if this is
+    // the first call, still need to do all of the below)
+    if (!glIsFirst) {
+      return;
+    }
+  }
+
+  glColumnWidth = newColumnWidth;
+  glColumnHeight = newColumnHeight;
+  // The next call to this function won't be the first
+  glIsFirst = false;
 
   const fixedContainer = document.getElementById(FIXED_CONTAINER_ID);
   fixedContainer.style.width = pbpGetPixels(glColumnWidth);
@@ -146,46 +164,37 @@ function pbpCalculateSizes() {
   realContent.style.columnWidth = pbpGetPixels(glColumnWidth);
   realContent.style.columnGap = 0;
 
-  // The element with id "end" is at the end of the input, so it should be
-  // on the last page. Use it to get the number of pages
-  const endElement = document.getElementById(END_ID);
-  endElement.style.width = 0;
-  endElement.style.height = 0;
+  // Use a setTimeout with a time of zero to allow the browser finishing
+  // re-flowing the content before executing the rest of this function.
+  setTimeout(() => {
+    // The element with id "end" is at the end of the input, so it should be
+    // on the last page. Use it to get the number of pages
+    const endElement = document.getElementById(END_ID);
+    const rect = endElement.getBoundingClientRect();
+    glLastPage = Math.floor(rect.left / glColumnWidth) + 1;
 
-  const rect = endElement.getBoundingClientRect();
-  glLastPage = Math.floor(rect.left / glColumnWidth) + 1;
+    const selector = '[data-item-id="' + glFirstOnPage + '"]';
+    const prevTopLeft = document.querySelector(selector);
+    if (prevTopLeft) {
+      const prevRect = prevTopLeft.getBoundingClientRect();
+      let right = (prevRect.left + prevRect.right) / 2;
+      const oldPageNr = glPageNr;
+      while (right > containerRect.right) {
+        right -= glColumnWidth;
+        glPageNr++;
+      }
+      while (right < containerRect.left) {
+        right += glColumnWidth;
+        glPageNr++;
+      }
+    }
+    if (glPageNr > glLastPage) {
+      glPageNr = glLastPage;
+    }
 
-  const selector = '[data-item-id="' + glFirstOnPage + '"]';
-  const prevTopLeft = document.querySelector(selector);
-  if (prevTopLeft) {
-    const prevRect = prevTopLeft.getBoundingClientRect();
-    // console.log(
-    //   "container.left=" + containerRect.left + ", right=" + containerRect.right
-    // );
-    // console.log(
-    //   "prevTopLeft.left=" + prevRect.left + ", right=" + prevRect.right
-    // );
-    let right = (prevRect.left + prevRect.right) / 2;
-    const oldPageNr = glPageNr;
-    while (right > containerRect.right) {
-      right -= glColumnWidth;
-      glPageNr++;
-    }
-    while (right < containerRect.left) {
-      right += glColumnWidth;
-      glPageNr++;
-    }
-    // if (glPageNr !== oldPageNr) {
-    //   console.log("Page number " + oldPageNr + "-->" + glPageNr);
-    // }
-    // } else {
-    //   console.log("No prevTopLeft found for " + selector);
-  }
-  if (glPageNr > glLastPage) {
-    glPageNr = glLastPage;
-  }
-  pbpSetPosition(glPageNr);
-  pbpUpdateToc();
+    pbpSetPosition(glPageNr);
+    pbpUpdateToc();
+  }, 0);
 }
 
 function pbpPaginate(containerId, contentId, options) {
@@ -203,6 +212,7 @@ function pbpPaginate(containerId, contentId, options) {
 
   glColumnWidth = Math.floor(containerElement.clientWidth);
   glColumnHeight = Math.floor(containerElement.clientHeight);
+  glIsFirst = true;
 
   containerElement.style.overflowX = "hidden";
   containerElement.position = "relative";
@@ -235,18 +245,20 @@ function pbpPaginate(containerId, contentId, options) {
   realContent.style.columnFill = "auto";
 
   let count = 0;
-  glHeading = [];
-  glHeadingNode = [];
+  glHeadingNodes = [];
+  const { toc } = options;
   while (contentElement.children.length) {
     const node = contentElement.children[0];
     contentElement.removeChild(contentElement.children[0]);
 
-    const tagName = node.tagName.toLowerCase();
-    if (tagName === "h1" || tagName === "h2") {
-      // Keep list of heading elements
-      const index = glHeading.length;
-      glHeading[index] = count;
-      glHeadingNode[index] = node;
+    if (toc) {
+      // Add the desired elements to the table of contents
+      const tagName = node.tagName.toLowerCase();
+      if (toc.includes(tagName)) {
+        // Keep list of heading elements
+        const index = glHeadingNodes.length;
+        glHeadingNodes[index] = node;
+      }
     }
 
     node.dataset.itemId = count++;
@@ -257,16 +269,17 @@ function pbpPaginate(containerId, contentId, options) {
   // calculate the last page.
   endElement = document.createElement("div");
   endElement.id = END_ID;
-  endElement.style.width = 0;
-  endElement.style.height = 0;
+  // endElement.style.width = 0;
+  // endElement.style.height = 0;
+  endElement.innerHTML = "This is the end of the text.";
   realContent.appendChild(endElement);
 
   fixedContainer.appendChild(realContent);
 
   containerElement.appendChild(fixedContainer);
+
   // Setup is complete. Complete initialization by calling the
   // `pbpCalculateSizes` function, then register the same function to handle
-  // window resizing.
   pbpCalculateSizes();
   window.addEventListener("resize", pbpCalculateSizes);
 }
