@@ -271,7 +271,7 @@ function pbpPaginate(containerId, contentId, options) {
   endElement.id = END_ID;
   // endElement.style.width = 0;
   // endElement.style.height = 0;
-  endElement.innerHTML = "This is the end of the text.";
+  endElement.innerHTML = "";
   realContent.appendChild(endElement);
 
   fixedContainer.appendChild(realContent);

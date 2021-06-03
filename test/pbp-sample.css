@@ -1,0 +1,264 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: normal;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+/* Establish the defaults */
+body {
+  background-color: #fec;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+}
+
+/* General link styling */
+a {
+  text-decoration: none;
+  color: #06c;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #c00;
+}
+
+/*
+ * Page Sizing
+ * ===========
+ *
+ * The left area has an intended width of 400px, the text area has an intended
+ * width of 800 px, for a total of 1200px.
+ */
+div.left-area {
+  width: 380px;
+}
+
+div.center-area {
+  left: 400px;
+  width: 800px;
+}
+
+div.center-area div.menu {
+  display: none;
+}
+
+@media screen and (max-width: 1199px) {
+  /* when getting under 1200px, the left area is no longer available. */
+  div.left-area {
+    display: none;
+  }
+
+  div.center-area {
+    left: inherit;
+    -width: 100%;
+    max-width: 800px;
+    right: 0;
+    -left: 50%;
+    -transform: translate(-50%, 0);
+  }
+
+  div.center-area div.menu {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  /* Under 800px, use the full available width. Also reduce the font size,
+     since we're now in the mobile phone rather than tablet/laptop range. */
+  body {
+    font-size: 18px;
+  }
+
+  div.left-area {
+    display: none;
+  }
+
+  div.center-area {
+    left: 0;
+    transform: none;
+    width: 100%;
+  }
+
+  div.center-area div.menu {
+    display: block;
+  }
+}
+
+/* left area: left part of the page */
+div.left-area {
+  /* padding 24px (2%) left and right gives total width of 288px (24%) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+  overflow-y: auto;
+}
+
+div.left-area h1 {
+  font-size: 150%;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
+div.left-area div.coverimg {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+div.left-area div.coverimg img {
+  max-width: 80%;
+}
+
+div.left-area p.summary {
+  font-size: 80%;
+  text-align: justify;
+}
+
+div.left-area p {
+  margin-top: 0.5em;
+}
+
+div.left-area p.prevnext {
+  text-align: center;
+  font-size: 80%;
+}
+
+div.left-area p.prevnext span.prev {
+  float: left;
+}
+
+div.left-area p.prevnext span.next {
+  float: right;
+}
+
+/* center area: place to display the PBP-paginated content, with a top
+ * and bottom part to display navigation and page number.
+ */
+div.center-area {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+}
+
+div.center-area div.prevnext,
+div.center-area div.content,
+div.center-area div.pagenr {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+div.center-area div.prevnext {
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+  text-align: center;
+}
+
+div.center-area div.prevnext span.prev {
+  float: left;
+}
+
+div.center-area div.prevnext span.next {
+  float: right;
+}
+
+div.center-area div.pagenr {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: right;
+}
+
+div.center-area div.content {
+  display: flex;
+  flex-grow: 1;
+  font-family: "Droid Serif", "Times New Roman", Times, serif;
+}
+
+div.table-of-contents {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.5);
+  z-index: 2;
+}
+
+div.toc-body {
+  position: absolute;
+  top: 5%;
+  width: 35em;
+  height: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 10px;
+  overflow-y: scroll;
+  background-color: #eee;
+  color: #333;
+  text-align: center;
+}
+
+div.toc-body h2 {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/*
+ * Book styling.
+ * ============
+ *
+ * The following styles are for the content of the "book".
+ */
+div.content h2 {
+  /* Column breaks are not supported on Firefox, but on other browsers they
+   * will cause chapters to begin on a new "page"
+   */
+  break-before: column;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  text-align: right;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 300%;
+}
+
+div.content p {
+  line-height: 135%;
+  text-align: justify;
+  text-indent: 1.5em;
+}
+
+div.content h2 + p,
+div.content h4 + p {
+  text-indent: 0;
+}
+
+div.content h4 {
+  text-align: center;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+div.content img {
+  max-width: 100%;
+}
