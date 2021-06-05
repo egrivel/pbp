@@ -1,3 +1,16 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
 /*
  * The Literata font is also specially designed for e-readers, but this one
  * by Google, and is provided with an license that allows unlimited copying
@@ -131,7 +144,7 @@ div.content {
  * relevant content at the top of the screen instead.
  */
 @media screen and (max-width: 799px) {
-  div.menu {
+  /* div.menu {
     position: absolute;
     height: 50px;
     padding-left: 10px;
@@ -167,18 +180,21 @@ div.content {
     border-bottom: 1px solid #99cc99;
   }
 
-  /* Hide the table of contents in this format */
   div.menu div.toc {
+    display: none;
+  } */
+
+  div.menu {
     display: none;
   }
 
   /* Hide the top navigation bar in the content, since in this layout, there
    * is a top navigation displayed as part of the 'menu' part. */
-  div.content p#top {
+  /* div.content p#top {
     display: none;
-  }
+  } */
 
-  div.menu p.prevnext {
+  /* div.menu p.prevnext {
     position: absolute !important;
     z-index: 1;
     top: 0;
@@ -195,11 +211,11 @@ div.content {
   }
   div.menu p.prevnext span.next {
     right: 10px;
-  }
+  } */
 
-  div#wrapper p.prevnext {
+  /* div#wrapper p.prevnext {
     display: none;
-  }
+  } */
 
   div.content {
     position: inherit;
@@ -297,7 +313,6 @@ div.content {
 div.content h2 {
   /* Column breaks are not supported on Firefox... :-( */
   break-before: column;
-  -moz-break-before: column;
   margin: 0;
   padding: 0;
   padding-top: 2em;
@@ -315,14 +330,6 @@ div.content p.dateline {
 div.content p {
   text-indent: 1.5em;
   margin: 0;
-  /* Set the white-space property. The tool that generates the HTML will   */
-  /* remove any extraneous white space inside a paragraph, thereby already */
-  /* doing what HTML does with collapsing white space. By setting the      */
-  /* property to "pre-wrap", the tool can now output extra spacing when    */
-  /* appropriate and have to be maintained in the display.                 */
-  /*                                                                       */
-  /* Seems to undo the "justify" setting, so keep it commented out for now */
-  /* white-space: pre-wrap; */
 }
 
 div.content p.diary {
@@ -344,18 +351,19 @@ div.content p.right {
 h4,
 div.content p.break2 {
   text-align: center;
-  padding: 0.5em;
+  padding: 1em;
 }
 
 div.content p.prevnext {
   font-family: "Droid Sans", sans-serif;
   text-indent: 0;
   margin-bottom: 20px;
+  text-align: center;
 }
 
-div.content p#top {
+/* div.content p#top {
   padding-bottom: 2em;
-}
+} */
 
 div.content p#bottom {
   padding-top: 2em;
@@ -389,6 +397,7 @@ p.prevnext {
   text-align: center;
   position: relative;
   padding-top: 20px;
+  width: 100%;
 }
 
 /* the 'Prev' link is positioned absolutely within the prevnext paragraph
@@ -407,6 +416,10 @@ p.prevnext span.next {
   float: right;
   position: absolute;
   right: 0;
+}
+
+p.prevnext span.toc {
+  align-self: center;
 }
 
 /* Specificially used in the story "The Writer", the blockquote is offset

@@ -11,8 +11,8 @@ div#wrapper {
 }
 
 p#top {
-  display: flex;
-  padding-bottom: 20px;
+  /* display: flex; */
+  /* padding-bottom: 20px; */
 }
 
 div#pbp-container {

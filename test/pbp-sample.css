@@ -24,13 +24,12 @@ body {
   background-color: #fec;
   color: #333;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 22px;
 }
 
 /* General link styling */
 a {
   text-decoration: none;
-  color: #06c;
+  color: #00e;
 }
 
 a:hover {
@@ -44,9 +43,26 @@ a:hover {
  *
  * The left area has an intended width of 400px, the text area has an intended
  * width of 800 px, for a total of 1200px.
+ *
+ * For smooth resizing
+ *  - For screen sizes over 1200px, left and center part are fixed, remainder
+ *    of the screen is blank.
+ *  - At 1200px, there is no remainder of the screen, so the center part is
+ *    effectively right aligned.
+ *  - Between 800px and 1200px, the left part is not displayed (shows background
+ *    color). The center part remains 800px wide and is right-aligned.
+ *  - At 800px, the center part takes up the full width.
+ *  - Below 800px, the center part is the full width.
  */
+body {
+  font-size: 22px;
+}
+
 div.left-area {
   width: 380px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #da5;
 }
 
 div.center-area {
@@ -54,27 +70,15 @@ div.center-area {
   width: 800px;
 }
 
-div.center-area div.menu {
-  display: none;
-}
-
 @media screen and (max-width: 1199px) {
-  /* when getting under 1200px, the left area is no longer available. */
   div.left-area {
     display: none;
   }
 
   div.center-area {
     left: inherit;
-    -width: 100%;
     max-width: 800px;
     right: 0;
-    -left: 50%;
-    -transform: translate(-50%, 0);
-  }
-
-  div.center-area div.menu {
-    display: block;
   }
 }
 
@@ -91,24 +95,22 @@ div.center-area div.menu {
 
   div.center-area {
     left: 0;
-    transform: none;
     width: 100%;
-  }
-
-  div.center-area div.menu {
-    display: block;
   }
 }
 
-/* left area: left part of the page */
+/*
+ * Left Area
+ * =========
+ *
+ * The left area provides information about the book, and the ability to jump
+ * to a particular page.
+ */
 div.left-area {
-  /* padding 24px (2%) left and right gives total width of 288px (24%) */
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
   text-align: left;
   overflow-y: auto;
 }
@@ -150,8 +152,13 @@ div.left-area p.prevnext span.next {
   float: right;
 }
 
-/* center area: place to display the PBP-paginated content, with a top
- * and bottom part to display navigation and page number.
+/*
+ * Center Area
+ * ===========
+ *
+ * The center area contains the PBP-paginated content. At the top of the center
+ * area is the content title repeated, and are the navigation controls. At the
+ * bottom is the current page number.
  */
 div.center-area {
   position: fixed;
@@ -194,6 +201,14 @@ div.center-area div.content {
   font-family: "Droid Serif", "Times New Roman", Times, serif;
 }
 
+/*
+ * Table of Contents
+ * =================
+ *
+ * Modal display with the table of contents. The table of contents has a
+ * background gray screen filling the entire screen and a white contents
+ * area over it.
+ */
 div.table-of-contents {
   position: absolute;
   top: 0;
@@ -204,7 +219,7 @@ div.table-of-contents {
   z-index: 2;
 }
 
-div.toc-body {
+div.table-of-contents div.toc-body {
   position: absolute;
   top: 5%;
   width: 35em;
@@ -216,12 +231,18 @@ div.toc-body {
   background-color: #eee;
   color: #333;
   text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-div.toc-body h2 {
+div.table-of-contents div.toc-body h2 {
   font-weight: bold;
   margin-top: 1em;
   margin-bottom: 0.5em;
+}
+
+div.table-of-contents div.toc-body li {
+  list-style-type: none;
 }
 
 /*
